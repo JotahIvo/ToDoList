@@ -17,15 +17,15 @@ formAddItem.addEventListener('submit', (event) =>{
     event.preventDefault();
 
     let descricaoTarefa = event.target.elements['tarefa'];
-    if(descricaoTarefa === '') return;
 
     const itemAtual = {
         texto: descricaoTarefa.value,
-        classe: 'provisorio'
+        classe: 'nao-feito'
     };
 
     criarElementoDaLista(itemAtual);
-    tarefas.push(itemAtual);
+
+    if(itemAtual.texto != '') tarefas.push(itemAtual);
 
     localStorage.setItem('tarefas', JSON.stringify(tarefas));
 
@@ -35,6 +35,8 @@ formAddItem.addEventListener('submit', (event) =>{
 
 //função que cria o elemento da lista
 function criarElementoDaLista(objetoItemAtual){
+    if(objetoItemAtual.texto === '') return;
+
     const novoItem = document.createElement('div');
     novoItem.classList.add('to-do-list');
     novoItem.classList.add(objetoItemAtual.classe);
@@ -79,11 +81,28 @@ document.addEventListener('click', (event) => {
     console.log(tituloDaTarefa);
 
     if(elementoClicado.classList.contains('botao-feito')){
-        elementoPai.classList.toggle('feito');  
+        elementoPai.classList.toggle('feito'); 
+
+        tarefas.forEach(tarefa => {
+            if(tarefa.texto === tituloDaTarefa && tarefa.classe === 'nao-feito'){
+                tarefa.classe = 'feito';
+            } else {
+                tarefa.classe = 'nao-feito';
+            };
+        });
     };
+
+     //escreve no local storage
 
     if(elementoClicado.classList.contains('botao-remover')){
         elementoPai.remove();
+
+        tarefas.forEach(tarefa => {
+            if(tarefa.texto === tituloDaTarefa){
+                console.log(tarefas.indexOf(tarefa));
+                tarefas.splice(tarefas.indexOf(tarefa), 1);
+            };
+        });
     };
 
     if(elementoClicado.classList.contains('botao-editar')){
@@ -92,6 +111,8 @@ document.addEventListener('click', (event) => {
         inputEditado.value = tituloDaTarefa;
         inputAntigo = tituloDaTarefa;
     };
+
+    localStorage.setItem("tarefas", JSON.stringify(tarefas));
 });
 
 function abilitarEdicao(){
