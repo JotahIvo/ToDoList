@@ -108,7 +108,9 @@ document.addEventListener('click', (event) => {
         abilitarEdicao(); 
 
         inputEditado.value = tituloDaTarefa;
+
         inputAntigo = tituloDaTarefa;
+        console.log(inputAntigo)
     };
 
     localStorage.setItem("tarefas", JSON.stringify(tarefas));
@@ -129,6 +131,7 @@ formEdicao.addEventListener('submit', (event) => {
     event.preventDefault();
 
     const valorInput = inputEditado.value;
+    console.log(valorInput)
 
     if(valorInput){
         atualizarLista(valorInput);
@@ -138,7 +141,7 @@ formEdicao.addEventListener('submit', (event) => {
 });
 
 function atualizarLista(input){
-    const listaCompletaTarefas = document.querySelectorAll('.secao-to-do-list');
+    const listaCompletaTarefas = document.querySelectorAll('.to-do-list');
 
     listaCompletaTarefas.forEach(tarefa => {
         let titulo = tarefa.querySelector('p');
@@ -146,4 +149,14 @@ function atualizarLista(input){
             titulo.innerText = input;
         };
     });
+
+    console.log(inputAntigo)
+
+    tarefas.forEach(tarefa => {
+        if(tarefa.texto === inputAntigo){
+            tarefa.texto = input;
+        };
+    });
+
+    localStorage.setItem("tarefas", JSON.stringify(tarefas));
 };
