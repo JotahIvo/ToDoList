@@ -78,21 +78,20 @@ document.addEventListener('click', (event) => {
         tituloDaTarefa = elementoPai.querySelector('p').innerText;
     };
 
-    console.log(tituloDaTarefa);
-
     if(elementoClicado.classList.contains('botao-feito')){
         elementoPai.classList.toggle('feito'); 
+        tituloDaTarefa = elementoPai.querySelector('p').innerText;
 
         tarefas.forEach(tarefa => {
             if(tarefa.texto === tituloDaTarefa && tarefa.classe === 'nao-feito'){
                 tarefa.classe = 'feito';
             } else {
-                tarefa.classe = 'nao-feito';
+                if(tarefa.texto === tituloDaTarefa && tarefa.classe === 'feito'){
+                    tarefa.classe = 'nao-feito';
+                };
             };
         });
     };
-
-     //escreve no local storage
 
     if(elementoClicado.classList.contains('botao-remover')){
         elementoPai.remove();
